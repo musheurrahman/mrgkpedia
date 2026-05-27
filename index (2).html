@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRPedia - বাংলা জ্ঞানকোষ</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Hind+Siliguri:wght@300;400;500;600;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --bg2: #080c14;
+    --bg3: #0a1020;
+    --blue: #1e90ff;
+    --blue2: #00bfff;
+    --blue3: #4db8ff;
+    --blue-glow: rgba(30,144,255,0.4);
+    --blue-dim: rgba(30,144,255,0.12);
+    --text: #e0f0ff;
+    --text2: #8ab4cc;
+    --border: rgba(30,144,255,0.25);
+    --card: rgba(8,18,35,0.9);
+    --glass: rgba(14,30,60,0.7);
+  }
+  [data-theme="light"] {
+    --bg: #e8f4ff;
+    --bg2: #d0e8ff;
+    --bg3: #f0f8ff;
+    --blue: #0050cc;
+    --blue2: #0077dd;
+    --blue3: #0099ff;
+    --blue-glow: rgba(0,80,204,0.3);
+    --blue-dim: rgba(0,80,204,0.08);
+    --text: #001a3a;
+    --text2: #2a5080;
+    --border: rgba(0,80,204,0.3);
+    --card: rgba(240,248,255,0.95);
+    --glass: rgba(200,230,255,0.85);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Hind Siliguri', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.4s, color 0.4s;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(30,144,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,144,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatOrb 8s ease-in-out infinite;
+  }
+  .orb1 { width:400px; height:400px; background:rgba(30,144,255,0.08); top:-100px; left:-100px; animation-delay:0s; }
+  .orb2 { width:300px; height:300px; background:rgba(0,191,255,0.06); bottom:100px; right:-50px; animation-delay:3s; }
+  .orb3 { width:200px; height:200px; background:rgba(77,184,255,0.05); top:50%; left:50%; animation-delay:6s; }
+
+  @keyframes floatOrb {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(30px,-30px); }
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  [data-theme="light"] header { background: rgba(232,244,255,0.92); }
+
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+  }
+
+  /* 3D Logo */
+  .logo-3d {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+  .logo-3d span {
+    background: linear-gradient(135deg, #4db8ff 0%, #1e90ff 40%, #00bfff 70%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px rgba(30,144,255,0.8)) drop-shadow(0 0 30px rgba(30,144,255,0.4));
+    text-shadow: none;
+    position: relative;
+    display: inline-block;
+    transform: perspective(300px) rotateX(10deg);
+    transform-style: preserve-3d;
+  }
+  .logo-3d span::before {
+    content: 'MRPedia';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,60,120,0.8), rgba(0,20,60,0.9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateZ(-6px) translateY(6px);
+    filter: blur(1px);
+    z-index: -1;
+  }
+  .logo-3d span::after {
+    content: 'MRPedia';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(30,144,255,0.3), transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateZ(-3px) translateY(3px) translateX(2px);
+    z-index: -1;
+  }
+  @keyframes logoPulse {
+    0%,100% { filter: drop-shadow(0 0 10px rgba(30,144,255,0.5)); }
+    50% { filter: drop-shadow(0 0 25px rgba(30,144,255,0.9)) drop-shadow(0 0 50px rgba(30,144,255,0.3)); }
+  }
+  .logo-tagline {
+    font-size: 0.55rem;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 4px;
+    color: var(--blue2);
+    display: block;
+    text-align: center;
+    margin-top: -4px;
+    opacity: 0.8;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+
+  .theme-btn {
+    background: var(--blue-dim);
+    border: 1px solid var(--border);
+    color: var(--blue2);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+  }
+  .theme-btn:hover { background: var(--blue-glow); transform: scale(1.1); }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    letter-spacing: 6px;
+    line-height: 1;
+    margin-bottom: 10px;
+    animation: heroIn 1s ease-out forwards;
+    opacity: 0;
+    transform: translateY(40px);
+    position: relative;
+    display: inline-block;
+    transform-style: preserve-3d;
+    perspective: 800px;
+  }
+  .hero-title .t-layer1 {
+    background: linear-gradient(180deg, #ffffff 0%, #4db8ff 30%, #1e90ff 60%, #0050aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(30,144,255,0.9)) drop-shadow(0 0 60px rgba(30,144,255,0.5));
+    display: block;
+    transform: perspective(500px) rotateX(12deg);
+  }
+  .hero-title .t-shadow {
+    position: absolute;
+    bottom: -8px; left: 4px;
+    background: linear-gradient(180deg, rgba(0,80,170,0.6), transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: perspective(500px) rotateX(12deg) scaleY(0.4) translateY(100%);
+    filter: blur(2px);
+    display: block;
+  }
+  @keyframes heroIn {
+    to { opacity:1; transform: translateY(0); }
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text2);
+    letter-spacing: 3px;
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: heroIn 1s 0.3s ease-out forwards;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--text2);
+    opacity: 0;
+    animation: heroIn 1s 0.5s ease-out forwards;
+  }
+
+  /* ===== CATEGORIES ===== */
+  .section-wrap {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 20px 40px;
+    position: relative; z-index: 1;
+  }
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 4px;
+    color: var(--blue2);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::after {
+    content: ''; flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .cat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--blue-dim), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .cat-card:hover { transform: translateY(-6px) scale(1.04); border-color: var(--blue); box-shadow: 0 12px 40px var(--blue-glow), 0 0 0 1px var(--blue); }
+  .cat-card:hover::before { opacity: 1; }
+  .cat-card.active { border-color: var(--blue); background: var(--blue-dim); box-shadow: 0 0 20px var(--blue-glow); }
+  .cat-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+  .cat-name { font-size: 0.85rem; font-weight: 600; color: var(--blue3); font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+  .cat-name-bn { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+
+  /* ===== CHAT AREA ===== */
+  .chat-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 60px rgba(30,144,255,0.08), 0 0 0 1px var(--border);
+    position: relative;
+  }
+  .chat-container::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), var(--blue2), var(--blue), transparent);
+    animation: scanLine 3s linear infinite;
+  }
+  @keyframes scanLine {
+    0% { opacity:0.4; } 50% { opacity:1; } 100% { opacity:0.4; }
+  }
+
+  .chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+    background: linear-gradient(90deg, var(--blue-dim), transparent);
+  }
+  .ai-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--blue2);
+    box-shadow: 0 0 10px var(--blue2);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  .chat-header-text { font-family: 'Rajdhani', sans-serif; letter-spacing: 2px; color: var(--blue2); font-size: 0.9rem; font-weight: 700; }
+  .chat-header-sub { font-size: 0.7rem; color: var(--text2); margin-left: auto; font-family: 'Rajdhani', sans-serif; }
+
+  .chat-messages {
+    height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg {
+    max-width: 85%;
+    animation: msgIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes msgIn { from { opacity:0; transform: translateY(20px) scale(0.95); } }
+  .msg.user { align-self: flex-end; }
+  .msg.ai { align-self: flex-start; }
+
+  .msg-bubble {
+    padding: 12px 16px;
+    border-radius: 16px;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    position: relative;
+  }
+  .msg.user .msg-bubble {
+    background: linear-gradient(135deg, var(--blue), #0060cc);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 20px rgba(30,144,255,0.3);
+  }
+  .msg.ai .msg-bubble {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+    backdrop-filter: blur(10px);
+  }
+  .msg-label {
+    font-size: 0.65rem;
+    color: var(--text2);
+    margin-bottom: 4px;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .msg.user .msg-label { text-align: right; }
+
+  .msg-actions {
+    display: flex; gap: 6px;
+    margin-top: 8px;
+  }
+  .msg.user .msg-actions { justify-content: flex-end; }
+  .action-btn {
+    background: var(--blue-dim);
+    border: 1px solid var(--border);
+    color: var(--blue3);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .action-btn:hover { background: var(--blue-glow); transform: scale(1.05); }
+  .action-btn.copied { background: rgba(0,200,100,0.2); border-color: #00cc66; color: #00cc66; }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: none; align-items: center; gap: 6px;
+    padding: 12px 16px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+  }
+  .typing-indicator.show { display: flex; }
+  .typing-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--blue2);
+    animation: typingBounce 1.2s ease-in-out infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);} 30%{transform:translateY(-8px);} }
+
+  /* Welcome message */
+  .welcome-msg {
+    text-align: center; padding: 30px 20px;
+    opacity: 0.7;
+  }
+  .welcome-icon { font-size: 3rem; margin-bottom: 12px; }
+  .welcome-title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--blue2); margin-bottom: 8px; }
+  .welcome-sub { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+  /* Quick prompts */
+  .quick-prompts {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 16px; justify-content: center;
+  }
+  .qp-btn {
+    background: var(--blue-dim);
+    border: 1px solid var(--border);
+    color: var(--blue3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Hind Siliguri', sans-serif;
+    transition: all 0.2s;
+  }
+  .qp-btn:hover { background: var(--blue-glow); border-color: var(--blue); transform: translateY(-2px); }
+
+  /* Chat input */
+  .chat-input-area {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 10px; align-items: flex-end;
+    background: linear-gradient(0deg, var(--blue-dim), transparent);
+  }
+  .input-wrap {
+    flex: 1; position: relative;
+  }
+  .chat-input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.95rem;
+    resize: none;
+    min-height: 48px;
+    max-height: 120px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    line-height: 1.5;
+  }
+  .chat-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim); }
+  .chat-input::placeholder { color: var(--text2); opacity: 0.6; }
+
+  .send-btn {
+    background: linear-gradient(135deg, var(--blue), #0060cc);
+    border: none;
+    color: white;
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(30,144,255,0.3);
+    flex-shrink: 0;
+  }
+  .send-btn:hover { transform: scale(1.1) rotate(-10deg); box-shadow: 0 6px 30px rgba(30,144,255,0.5); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ===== STATS BAR ===== */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  .stat-card:hover { border-color: var(--blue); box-shadow: 0 8px 30px var(--blue-glow); transform: translateY(-3px); }
+  .stat-num { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--blue2); font-weight: 700; }
+  .stat-label { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 30px; right: 30px;
+    background: linear-gradient(135deg, #001a3a, #002855);
+    border: 1px solid var(--blue);
+    color: var(--blue3);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    z-index: 999;
+    transform: translateX(200%);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 10px 40px rgba(30,144,255,0.3);
+  }
+  .toast.show { transform: translateX(0); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 0.8rem;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 2px;
+  }
+  footer span { color: var(--blue2); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .logo-3d { font-size: 1.4rem; }
+    .hero-title .t-layer1 { font-size: 3rem; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); }
+    .cat-grid { grid-template-columns: repeat(3,1fr); }
+  }
+
+  /* Loading shimmer */
+  .shimmer {
+    background: linear-gradient(90deg, var(--bg2) 25%, var(--blue-dim) 50%, var(--bg2) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="nav-inner">
+    <div>
+      <div class="logo-3d">
+        <span>MRPedia</span>
+        <small class="logo-tagline">বাংলা জ্ঞানকোষ</small>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Theme switch">🌙</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-title">
+    <span class="t-layer1">MRPedia</span>
+    <span class="t-shadow" aria-hidden="true">MRPedia</span>
+  </div>
+  <p class="hero-sub">AI-Powered Bangla Knowledge Base</p>
+  <p class="hero-desc">বাংলা • English • Banglish — যেকোনো ভাষায় জ্ঞান অর্জন করুন</p>
+</section>
+
+<main class="section-wrap">
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-num" id="qCount">0</div>
+      <div class="stat-label">প্রশ্ন করা হয়েছে</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">বিষয়বস্তু</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3</div>
+      <div class="stat-label">ভাষা সমর্থন</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">AI</div>
+      <div class="stat-label">Powered by Claude</div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section-title">ক্যাটাগরি বেছে নিন</div>
+  <div class="cat-grid" id="catGrid">
+    <div class="cat-card active" onclick="selectCat(this, 'সাধারণ', 'General GK')" data-en="General GK">
+      <span class="cat-icon">🌐</span>
+      <div class="cat-name">GENERAL</div>
+      <div class="cat-name-bn">সাধারণ জ্ঞান</div>
+    </div>
+    <div class="cat-card" onclick="selectCat(this, 'বিজ্ঞান', 'Science')" data-en="Science">
+      <span class="cat-icon">🔬</span>
+      <div class="cat-name">SCIENCE</div>
+      <div class="cat-name-bn">বিজ্ঞান</div>
+    </div>
+    <div class="cat-card" onclick="selectCat(this, 'ইতিহাস', 'History')" data-en="History">
+      <span class="cat-icon">🏛️</span>
+      <div class="cat-name">HISTORY</div>
+      <div class="cat-name-bn">ইতিহাস</div>
+    </div>
+    <div class="cat-card" onclick="selectCat(this, 'খেলাধুলা', 'Sports')" data-en="Sports">
+      <span class="cat-icon">⚽</span>
+      <div class="cat-name">SPORTS</div>
+      <div class="cat-name-bn">খেলাধুলা</div>
+    </div>
+    <div class="cat-card" onclick="selectCat(this, 'প্রযুক্তি', 'Technology')" data-en="Technology">
+      <span class="cat-icon">💻</span>
+      <div class="cat-name">TECH</div>
+      <div class="cat-name-bn">প্রযুক্তি</div>
+    </div>
+    <div class="cat-card" onclick="selectCat(this, 'বাংলাদেশ', 'Bangladesh')" data-en="Bangladesh">
+      <span class="cat-icon">🇧🇩</span>
+      <div class="cat-name">BD</div>
+      <div class="cat-name-bn">বাংলাদেশ</div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="section-title">AI চ্যাট</div>
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="ai-dot"></div>
+      <span class="chat-header-text">MR AI ASSISTANT</span>
+      <span class="chat-header-sub" id="catLabel">ক্যাটাগরি: সাধারণ জ্ঞান</span>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="welcome-msg" id="welcomeMsg">
+        <div class="welcome-icon">🤖</div>
+        <div class="welcome-title">MRPedia AI তে স্বাগতম!</div>
+        <div class="welcome-sub">
+          বাংলা, English বা Banglish — যেকোনো ভাষায় GK প্রশ্ন করুন।<br>
+          Science, History, Sports, Technology বা Bangladesh — সব বিষয়ে AI উত্তর দেবে।
+        </div>
+        <div class="quick-prompts">
+          <button class="qp-btn" onclick="quickAsk('বাংলাদেশের মুক্তিযুদ্ধ কত সালে হয়েছিল?')">🇧🇩 মুক্তিযুদ্ধ</button>
+          <button class="qp-btn" onclick="quickAsk('DNA কি?')">🔬 DNA কি?</button>
+          <button class="qp-btn" onclick="quickAsk('Who invented the telephone?')">📞 Telephone</button>
+          <button class="qp-btn" onclick="quickAsk('Cristiano Ronaldo er koyta goal ache?')">⚽ Ronaldo</button>
+          <button class="qp-btn" onclick="quickAsk('বাংলাদেশের রাজধানী কোথায়?')">🏛️ রাজধানী</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="input-wrap">
+        <textarea
+          id="chatInput"
+          class="chat-input"
+          placeholder="বাংলা, English বা Banglish এ GK প্রশ্ন করুন..."
+          rows="1"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>⚡ Powered by <span>Anthropic Claude AI</span> &nbsp;|&nbsp; Made with ❤️ for <span>Bangladesh</span> &nbsp;|&nbsp; <span>MRPedia</span> © 2025</p>
+  <p style="margin-top:10px; font-size:0.85rem; color:var(--blue2); letter-spacing:2px;">Created by <span style="color:#FFD700; font-weight:700; text-shadow: 0 0 10px rgba(255,215,0,0.6);">Md. Musheur Rahman</span></p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let currentCategory = 'সাধারণ জ্ঞান';
+  let currentCategoryEn = 'General GK';
+  let questionCount = 0;
+  let isLoading = false;
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    if (html.dataset.theme === 'dark') {
+      html.dataset.theme = 'light';
+      btn.textContent = '☀️';
+    } else {
+      html.dataset.theme = 'dark';
+      btn.textContent = '🌙';
+    }
+  }
+
+  function selectCat(el, catBn, catEn) {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    currentCategory = catBn;
+    currentCategoryEn = catEn;
+    document.getElementById('catLabel').textContent = 'ক্যাটাগরি: ' + catBn;
+    showToast('📂 ক্যাটাগরি: ' + catBn);
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function quickAsk(q) {
+    document.getElementById('chatInput').value = q;
+    sendMessage();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function addMessage(role, text) {
+    const welcome = document.getElementById('welcomeMsg');
+    if (welcome) welcome.remove();
+
+    const container = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+
+    const label = role === 'user' ? '👤 আপনি' : '🤖 MR AI';
+    const actionsHtml = role === 'ai' ? `
+      <div class="msg-actions">
+        <button class="action-btn" onclick="copyText(this, \`${text.replace(/`/g,'\\`')}\`)">📋 Copy</button>
+        <button class="action-btn" onclick="shareWA(\`${text.replace(/`/g,'\\`')}\`)">💬 WhatsApp</button>
+        <button class="action-btn" onclick="shareFB(\`${text.replace(/`/g,'\\`')}\`)">📘 Facebook</button>
+      </div>` : '';
+
+    div.innerHTML = `
+      <div class="msg-label">${label}</div>
+      <div class="msg-bubble">${text}</div>
+      ${actionsHtml}
+    `;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+    return div;
+  }
+
+  function showTyping() {
+    const container = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg ai';
+    div.id = 'typingIndicator';
+    div.innerHTML = `
+      <div class="msg-label">🤖 MR AI</div>
+      <div class="typing-indicator show">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    `;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  async function sendMessage() {
+    if (isLoading) return;
+    const input = document.getElementById('chatInput');
+    const q = input.value.trim();
+    if (!q) return;
+
+    isLoading = true;
+    input.value = '';
+    input.style.height = 'auto';
+    document.getElementById('sendBtn').disabled = true;
+
+    questionCount++;
+    document.getElementById('qCount').textContent = questionCount;
+
+    addMessage('user', q);
+    showTyping();
+
+    try {
+      const systemPrompt = `তুমি MRPedia-র AI সহকারী। তোমার কাজ হলো General Knowledge (GK) প্রশ্নের উত্তর দেওয়া।
+
+বর্তমান ক্যাটাগরি: ${currentCategory} (${currentCategoryEn})
+
+নিয়মাবলী:
+1. ব্যবহারকারী যে ভাষায় প্রশ্ন করবে সেই ভাষায় উত্তর দাও (বাংলা/English/Banglish)
+2. উত্তর সংক্ষিপ্ত কিন্তু তথ্যবহুল হবে (3-6 বাক্য)
+3. GK বিষয়ক প্রশ্নে সঠিক তথ্য দাও
+4. বাংলায় উত্তর দিলে সুন্দর বাংলায় দাও
+5. উত্তরের শেষে একটি মজার তথ্য যোগ করতে পারো (💡 জানো কি: ...)
+6. শুধুমাত্র GK/জ্ঞানমূলক প্রশ্নের উত্তর দাও`;
+
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: "user", content: q }]
+        })
+      });
+
+      const data = await response.json();
+      removeTyping();
+
+      if (data.content && data.content[0]) {
+        addMessage('ai', data.content[0].text);
+      } else {
+        addMessage('ai', 'দুঃখিত, এই মুহূর্তে উত্তর দিতে পারছি না। আবার চেষ্টা করুন।');
+      }
+    } catch (err) {
+      removeTyping();
+      addMessage('ai', '⚠️ সংযোগে সমস্যা হয়েছে। ইন্টারনেট চেক করে আবার চেষ্টা করুন।');
+    }
+
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('chatInput').focus();
+  }
+
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      btn.classList.add('copied');
+      showToast('✅ উত্তর কপি হয়েছে!');
+      setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function shareWA(text) {
+    const msg = encodeURIComponent('📚 MRPedia থেকে:\n\n' + text + '\n\n🔗 mrpedia.com এ আরো জানুন');
+    window.open('https://wa.me/?text=' + msg, '_blank');
+  }
+
+  function shareFB(text) {
+    const msg = encodeURIComponent('📚 MRPedia থেকে:\n\n' + text);
+    window.open('https://www.facebook.com/sharer/sharer.php?u=https://mrpedia.com&quote=' + msg, '_blank');
+  }
+</script>
+</body>
+</html>
